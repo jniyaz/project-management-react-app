@@ -1,24 +1,63 @@
 import React from "react";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 const ProjectDetails = (props) => {
   const id = props.match.params.id;
-  return (
-    <div className="container section project-details">
-      <div className="card z-depth-0">
-        <div className="card-content">
-          <span className="card-title">Project Title - {id}</span>
-          <p className="">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-            assumenda et, omnis officiis voluptatem necessitatibus!
-          </p>
-        </div>
-        <div className="card-action grey lighten-4 grey-text">
-          <div>Posted By: Niyaz</div>
-          <div>Date: 03/06/2020, 02 am</div>
+  const { project } = props;
+  if (project) {
+    return (
+      <div className="container section project-details">
+        <div className="card z-depth-0">
+          <div className="card-content">
+            <span className="card-title">{project.title}</span>
+            <p className="">{project.description}</p>
+          </div>
+          <div className="card-action grey lighten-4 grey-text">
+            <div>
+              Posted By: {project.authorFirstName} {project.authorLastName}
+            </div>
+            <div>Date: 03/06/2020, 02 am</div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="container section center project-details">
+        <div className="card z-depth-0">
+          <div className="card-content">
+            <div className="preloader-wrapper big active col">
+              <div className="spinner-layer spinner-blue-only">
+                <div className="circle-clipper left">
+                  <div className="circle"></div>
+                </div>
+                <div className="gap-patch">
+                  <div className="circle"></div>
+                </div>
+                <div className="circle-clipper right">
+                  <div className="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
-export default ProjectDetails;
+const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.match.params.id;
+  const projects = state.firestore.data.projects;
+  const project = projects ? projects[id] : null;
+  return {
+    project: project,
+  };
+};
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([{ collection: "projects" }])
+)(ProjectDetails);

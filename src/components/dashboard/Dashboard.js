@@ -7,7 +7,7 @@ import { compose } from "redux";
 
 class Dashboard extends Component {
   render() {
-    const { projects } = this.props;
+    const { projects } = this.props; // destructure
     return (
       <div className="dashboard container">
         <div className="row">
