@@ -30,6 +30,7 @@ class CreateProject extends Component {
               type="text"
               id="title"
               className=""
+              required
               onChange={this.handleChange}
             />
           </div>
@@ -38,6 +39,7 @@ class CreateProject extends Component {
             <textarea
               id="description"
               className="materialize-textarea"
+              required
               onChange={this.handleChange}
             ></textarea>
           </div>

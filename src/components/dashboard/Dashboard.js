@@ -8,18 +8,42 @@ import { compose } from "redux";
 class Dashboard extends Component {
   render() {
     const { projects } = this.props; // destructure
-    return (
-      <div className="dashboard container">
-        <div className="row">
-          <div className="col s12 m6">
-            <ProjectList projects={projects} />
-          </div>
-          <div className="col s12 m5 offset-m1">
-            <Notifications />
+    if (projects) {
+      return (
+        <div className="dashboard container">
+          <div className="row">
+            <div className="col s12 m6">
+              <ProjectList projects={projects} />
+            </div>
+            <div className="col s12 m5 offset-m1">
+              <Notifications />
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="container section center project-details">
+          <div className="card z-depth-0">
+            <div className="card-content">
+              <div className="preloader-wrapper big active col">
+                <div className="spinner-layer spinner-blue-only">
+                  <div className="circle-clipper left">
+                    <div className="circle"></div>
+                  </div>
+                  <div className="gap-patch">
+                    <div className="circle"></div>
+                  </div>
+                  <div className="circle-clipper right">
+                    <div className="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
