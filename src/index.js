@@ -15,19 +15,20 @@ const store = createStore(
   rootReducer,
   compose(
     applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reactReduxFirebase(firebaseConfig), // redux binding for firebase
-    reduxFirestore(firebaseConfig) // redux bindings for firestore
+    reduxFirestore(firebaseConfig), // redux bindings for firestore
+    reactReduxFirebase(firebaseConfig, { attachAuthIsReady: true }) // redux binding for firebase
   )
 );
 
-ReactDOM.render(
-  <React.StrictMode>
+// render DOM only firebase is initialized..
+store.firebaseAuthIsReady.then(() => {
+  ReactDOM.render(
     <Provider store={store}>
       <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+    </Provider>,
+    document.getElementById("root")
+  );
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
